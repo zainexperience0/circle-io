@@ -42,16 +42,17 @@ enum communityType {
 
 model Community {
   id                   String        @id @default(auto()) @map("_id") @db.ObjectId
-  name                 String
+  name                 String        @unique
   type                 communityType @default(PUBLIC)
   color                String?
   logo                 String?
+  position             Int
   coverImage           String?
   icon                 String?
   inviteCode           String
   enableFeed           Boolean       @default(true)
   enableGettingStarted Boolean       @default(true)
-  url                  String
+  url                  String        @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

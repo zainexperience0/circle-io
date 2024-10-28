@@ -131,7 +131,7 @@ export const features_0 = [
       name: "Start",
       title: "Your community, courses, and content – all in one place.",
       description:
-        "Gone are the days of needing to make a whole bunch of different tools work together. With Circle, you can combine the exciting, interactive nature of a community with your content — all in one seamless experience.",
+        "Gone are the days of needing to make a whole bunch of different tools work together. With , you can combine the exciting, interactive nature of a community with your content — all in one seamless experience.",
       imageSrc: "/start.webp",
     },
     {
@@ -140,16 +140,16 @@ export const features_0 = [
       title:
         "Courses, live streams, group chats, events, rich profile, and more.",
       description:
-        "Your members are the star of the show — they just need the tools to connect with each other and shine. You want an active, buzzing community. And so do your members. With Circle you get powerful engagement features so that you can empower your members to build that vision with you.",
+        "Your members are the star of the show — they just need the tools to connect with each other and shine. You want an active, buzzing community. And so do your members. With arloo.dev you get powerful engagement features so that you can empower your members to build that vision with you.",
       imageSrc: "/engage.png",
     },
     {
       value: "monetize",
       name: "Monetize",
       title:
-        "Whether you’re offering a course, a membership, one-time access to content, or monthly recurring subscriptions — Circle has you covered.",
+        "Whether you’re offering a course, a membership, one-time access to content, or monthly recurring subscriptions — Arloo.dev has you covered.",
       description:
-        "Many of the top creators and brands run their entire business on Circle. You can easily start accepting payments in minutes. Whether you’re offering a membership, one-time access to content, providing free trials or monthly recurring subscriptions — Circle has you covered.",
+        "Many of the top creators and brands run their entire business on Arloo.dev. You can easily start accepting payments in minutes. Whether you’re offering a membership, one-time access to content, providing free trials or monthly recurring subscriptions — Arloo.dev has you covered.",
       imageSrc: "/monetize.png",
     },
     {
@@ -157,7 +157,7 @@ export const features_0 = [
       name: "Scale",
       title: "Manage and scale your community operations",
       description:
-        "Get back the precious time you currently spend on repetitive, manual tasks so that you can focus on more meaningful work. Circle comes with powerful workflows, integrations, and AI-powered content and analytics tools to help you create an extraordinary member experience.",
+        "Get back the precious time you currently spend on repetitive, manual tasks so that you can focus on more meaningful work. Arloo.dev comes with powerful workflows, integrations, and AI-powered content and analytics tools to help you create an extraordinary member experience.",
       imageSrc: "/scale.png",
     },
   ];

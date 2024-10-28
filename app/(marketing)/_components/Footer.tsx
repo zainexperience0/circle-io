@@ -22,7 +22,7 @@ export const Footer = () => {
               "Careers",
               "Affiliate program",
               "Partner program",
-              "Circle Plus",
+              "Arloo.dev Plus",
             ].map((item) => (
               <li key={item}>
                 <Link href={`/${item}`} className="hover:underline">
@@ -104,7 +104,7 @@ export const Footer = () => {
 
       <div className="mt-12 border-t-2 border-slate-200 flex flex-col sm:flex-row justify-between items-center">
         <p className="text-sm text-gray-600 mb-4 sm:mb-0">
-          &copy; 2024 Circle. All rights reserved.
+          &copy; 2024 Arloodots Software House. All rights reserved.
         </p>
         <div className="flex items-center">
           <span className="mr-2">English</span>
