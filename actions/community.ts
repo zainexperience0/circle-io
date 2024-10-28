@@ -50,3 +50,4 @@ export const getCommunities = async () => {
     })
     return communities
 }
+

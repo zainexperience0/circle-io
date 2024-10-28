@@ -21,22 +21,72 @@ export async function POST(req: Request) {
             },
         })
         const position = lastCommunity ? lastCommunity.position + 1 : 1
+        const community = await db.$transaction(async (tx) => {
+            const community_0 = await tx.community.create({
+                data: {
+                    name,
+                    url,
+                    position,
+                    userId: user.id,
+                    type: "PUBLIC",
+                    inviteCode: nanoid(5),
+                    enableFeed: true,
+                    enableGettingStarted: true
+                },
+                select: {
+                    url: true,
+                    id: true
+                }
+            })
+            const spaceGroup = await tx.spaceGroup.create({
+                data: {
+                    name: "Get started",
+                    communityId: community_0.id,
+                    userId: user.id,
+                },
+            });
 
-        const community = await db.community.create({
-            data: {
-                name,
-                url,
-                position,
+            const spaces = await tx.space.createMany({
+                data: [
+                    {
+                        name: "Start Here",
+                        icon: "🏠",
+                        spaceGroupId: spaceGroup.id,
+                        userId: user.id,
+                        communityId: community_0.id,
+                    },
+                    {
+                        name: "Say Hello",
+                        icon: "🖐️",
+                        spaceGroupId: spaceGroup.id,
+                        userId: user.id,
+                        communityId: community_0.id,
+                    },
+                    {
+                        name: "Resources",
+                        icon: "📚",
+                        spaceGroupId: spaceGroup.id,
+                        userId: user.id,
+                        communityId: community_0.id,
+                    },
+                ],
+            });
+            const spaceIds = await tx.space.findMany({
+                where: { spaceGroupId: spaceGroup.id },
+                select: { id: true },
+            });
+
+            const memberData: any = spaceIds.map((space) => ({
                 userId: user.id,
-                type: "PUBLIC",
-                inviteCode: nanoid(5),
-                enableFeed: true,
-                enableGettingStarted: true
-            },
-            select: {
-                url: true
-            }
+                spaceGroupId: spaceGroup.id,
+                communityId: community_0.id,
+                spaceId: space.id,
+                type: "ADMIN",
+            }));
+            await tx.member.createMany({ data: memberData });
+            return community_0
         })
+
         return NextResponse.json(community, { status: 200 })
 
     } catch (error) {
@@ -46,13 +96,13 @@ export async function POST(req: Request) {
 
 export async function PUT(req: Request) {
     const user = await currentUser()
-    if(!user?.id){
+    if (!user?.id) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const { list } = await req.json()
 
-    for(let item of list){
+    for (let item of list) {
         await db.community.update({
             where: {
                 id: item.id
