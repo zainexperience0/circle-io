@@ -1,11 +1,17 @@
+"use client"
 
+import { MediaRoom } from "@/components/MediaRoom"
 
-const page  = async () => {
+const Main  = () => {
   return (
     <div>
-   getting started
+   {/* <MediaRoom
+   audio
+   video
+   chatId="test"
+    /> */}
     </div>
   )
 }
 
-export default page
+export default Main
