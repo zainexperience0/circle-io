@@ -1,11 +1,10 @@
 import { ActionTooltip } from "@/components/ActionTooltip";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowUpDown, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 import { Item } from "./Item";
-import { Community } from "@prisma/client";
 import { getCommunities } from "@/actions/community";
 import { Separator } from "@/components/ui/separator";
 import { Reorder } from "@/components/models/community/Reorder";

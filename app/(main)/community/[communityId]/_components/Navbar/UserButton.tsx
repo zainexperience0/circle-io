@@ -14,7 +14,6 @@ import { signOut } from "next-auth/react";
 
 export const UserButton = () => {
   const user = useAuth();
-
   return (
     <Popover>
       <PopoverTrigger>

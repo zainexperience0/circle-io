@@ -1,4 +1,4 @@
-import { getCommunityForSidebar } from "@/actions/community"
+import { getCommunityData } from "@/actions/community"
 import { LinksAccordion } from "./LinksAccordion"
 
 interface Props{
@@ -7,11 +7,11 @@ interface Props{
 
 export const SpacesSidebar = async ({communityId}: Props) => {
   
-  const {links, role} = await getCommunityForSidebar(communityId)
+  const {links, role} = await getCommunityData(communityId)
   
   return (
-    <div className="p-4 flex flex-col text-primary w-full dark:bg-[#1e1f22] py-6 space-y-4 h-full justify-between">
-        {<LinksAccordion data={links!} role={role!}/>}
+    <div className="p-4 flex flex-col text-primary w-full border-r border-violet-500  py-6 space-y-4 h-full justify-between">
+        {<LinksAccordion data={links!} role={role!} communityId={communityId}/>}
         </div>
   )
 }

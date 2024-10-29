@@ -73,7 +73,8 @@ export const getCommunityWithMemberRoles = async (url: string) => {
   return { community, role }
 }
 
-export const getCommunityForSidebar = async (id: string) => {
+export const getCommunityData = async (id: string) => {
+
   const user = await currentUser()
   if (!user?.id) {
     redirect('/auth/sign-in')
@@ -86,7 +87,12 @@ export const getCommunityForSidebar = async (id: string) => {
     },
     select: {
       links: true,
-      members: true
+      members: {
+        select: {
+          userId: true,
+          type: true
+        }
+      }
     }
   })
 

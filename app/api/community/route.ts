@@ -114,5 +114,4 @@ export async function PUT(req: Request) {
     }
 
     return NextResponse.json("Success", { status: 200 })
-
 }

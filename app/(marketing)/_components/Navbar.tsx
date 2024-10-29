@@ -2,8 +2,6 @@ import { initialCommunity } from "@/actions/community";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { currentUser } from "@/lib/auth";
-import { db } from "@/lib/db";
-import { init } from "next/dist/compiled/webpack/webpack";
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";

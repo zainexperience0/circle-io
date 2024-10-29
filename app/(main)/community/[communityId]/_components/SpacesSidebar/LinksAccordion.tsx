@@ -1,3 +1,4 @@
+import { ActionTooltip } from "@/components/ActionTooltip";
 import LinkModal from "@/components/models/LinkModel";
 import {
   Accordion,
@@ -6,15 +7,16 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { Link as PLink } from "@prisma/client";
-import { ArrowUpRight, Plus } from "lucide-react";
+import { MemberType, Link as PLink } from "@prisma/client";
+import { ArrowUpRight, Plus, Settings } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
   data: PLink[] | null;
-  role: "ADMIN" | "MODERATOR" | "GUEST";
+  role: MemberType;
+  communityId: string;
 }
-export const LinksAccordion = ({ data, role }: Props) => {
+export const LinksAccordion = ({ data, role, communityId }: Props) => {
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1">
@@ -34,16 +36,22 @@ export const LinksAccordion = ({ data, role }: Props) => {
               </Button>
             </Link>
           ))}
-         {(role === "ADMIN" || role === "MODERATOR") && <LinkModal communityId={data?.[0].communityId}>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-full font-normal justify-start mb-1 hover:bg-gray-200"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              <h1 className="text-sm">Add Link</h1>
-            </Button>
-          </LinkModal>}
+          {(role === "ADMIN" || role === "MODERATOR") && (
+            <div className="flex items-center justify-between">
+              <LinkModal communityId={communityId}>
+                <ActionTooltip label="Add Link">
+                  <Button variant="ghost" size="sm">
+                    <Plus className="mr-2 h-4 w-4" />
+                  </Button>
+                </ActionTooltip>
+              </LinkModal>
+              <ActionTooltip label="Settings">
+                <Button variant="ghost" size="sm">
+                  <Settings className="mr-2 h-4 w-4" />
+                </Button>
+              </ActionTooltip>
+            </div>
+          )}
         </AccordionContent>
       </AccordionItem>
     </Accordion>

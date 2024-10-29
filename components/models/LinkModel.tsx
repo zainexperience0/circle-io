@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import { CheckCircle, Loader } from "lucide-react";
 
@@ -24,49 +24,51 @@ export default function LinkModal({ children, communityId }: LinkModalProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState({
-    fields: {
-      title: "",
-      url: "",
-    },
+    fields: { title: "", url: "" },
     loading: false,
     error: false,
     success: false,
   });
 
   const onSubmit = async () => {
-    setState((prevState) => ({
-      ...prevState,
-      loading: true,
-      error: false, // Reset error before submission
-    }));
+    setState((prev) => ({ ...prev, loading: true, error: false }));
 
     try {
-      const res = await axios.post(
-        `/api/community/${communityId}/link`,
-        {
-          title: state.fields.title,
-          url: state.fields.url,
-        }
-      );
+      await axios.post(`/api/community/${communityId}/link`, state.fields);
 
-      setState((prevState) => ({
-        ...prevState,
+      setState((prev) => ({
+        ...prev,
         loading: false,
         success: true,
+        fields: { title: "", url: "" },
       }));
 
       setTimeout(() => {
         setOpen(false);
         router.refresh();
+        setState((prev) => ({
+          ...prev,
+          success: false,
+          error: false,
+          loading: false,
+        }));
       }, 2000);
     } catch (error) {
-      setState((prevState) => ({
-        ...prevState,
+      setState((prev) => ({
+        ...prev,
         loading: false,
         error: true,
       }));
       console.log(error);
     }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setState((prev) => ({
+      ...prev,
+      fields: { ...prev.fields, [name]: value },
+    }));
   };
 
   return (
@@ -80,13 +82,9 @@ export default function LinkModal({ children, communityId }: LinkModalProps) {
           <div className="grid gap-2">
             <Label>Link title</Label>
             <Input
+              name="title"
               value={state.fields.title}
-              onChange={(e) =>
-                setState({
-                  ...state,
-                  fields: { ...state.fields, title: e.target.value },
-                })
-              }
+              onChange={handleChange}
               placeholder="Keep this under 20 characters."
               maxLength={20}
             />
@@ -94,13 +92,9 @@ export default function LinkModal({ children, communityId }: LinkModalProps) {
           <div className="grid gap-2">
             <Label>Link URL</Label>
             <Input
+              name="url"
               value={state.fields.url}
-              onChange={(e) =>
-                setState({
-                  ...state,
-                  fields: { ...state.fields, url: e.target.value },
-                })
-              }
+              onChange={handleChange}
               placeholder="Links will open up in a new tab."
             />
           </div>
@@ -115,7 +109,7 @@ export default function LinkModal({ children, communityId }: LinkModalProps) {
           {state.loading && "Creating..."}
           {!state.loading && !state.success && !state.error && "Submit"}
           {state.success && <CheckCircle className="h-4 w-4 mr-2" />}
-          {state.success && `Link created!`}
+          {state.success && "Link created!"}
           {state.error && "Failed to create!"}
         </Button>
       </DialogContent>
