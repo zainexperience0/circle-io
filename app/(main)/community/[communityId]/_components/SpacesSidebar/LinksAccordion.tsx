@@ -13,13 +13,15 @@ import { ArrowUpRight, Plus, Settings } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
-  data: {
-    communityId: string;
-    id: string;
-    position: number;
-    url: string;
-    title: string;
-}[] | undefined ;
+  data:
+    | {
+        communityId: string;
+        id: string;
+        position: number;
+        url: string;
+        title: string;
+      }[]
+    | undefined;
   role: MemberType;
   communityId: string;
 }
@@ -52,7 +54,9 @@ export const LinksAccordion = ({ data, role, communityId }: Props) => {
                   </ActionTooltip>
                 </Button>
               </LinkModal>
-              <Reorder data={data!} communityId={communityId}/>
+              {data?.length !== 0 && (
+                <Reorder data={data!} communityId={communityId} />
+              )}
             </div>
           )}
         </AccordionContent>

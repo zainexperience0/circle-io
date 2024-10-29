@@ -20,42 +20,43 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ActionTooltip } from "@/components/ActionTooltip";
-import LinkModal from "./LinkModel";
+import { SpaceGroupModel } from ".";
 import { DeleteDialog } from "@/components/DeleteDialog";
-
 interface Props {
-  data: {
-    communityId: string;
-    id: string;
-    position: number;
-    url: string;
-    title: string;
-  }[];
   communityId: string | undefined;
+  data: {
+    id: string;
+    name: string;
+    position: number;
+  }[];
 }
-export const Reorder = ({ data, communityId }: Props) => {
-  const [links, setLinks] = useState(data);
+export const ReOrder = ({ data, communityId }: Props) => {
+  const [groups, setGroups] = useState(data);
   const [open, setOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    setLinks(data);
+    setGroups(data);
   }, [data]);
+
   const onReorder = async (updateData: { id: string; position: number }[]) => {
     try {
       setIsUpdating(true);
-      await axios.patch(`/api/community/${communityId}/link?action=reorder`, {
-        list: updateData,
-      });
-      toast.success("Links reordered successfully.");
+      await axios.patch(
+        `/api/community/${communityId}/spaceGroup?action=reorder`,
+        {
+          list: updateData,
+        }
+      );
+      toast.success("Groups reordered successfully.");
       router.refresh();
       setTimeout(() => {
         setOpen(false);
       }, 2000);
     } catch (error) {
       console.log(error);
-      toast.error("Failed to reorder Links.");
+      toast.error("Failed to reorder Groups.");
     } finally {
       setIsUpdating(false);
     }
@@ -71,13 +72,13 @@ export const Reorder = ({ data, communityId }: Props) => {
     const startIndex = Math.min(result.source.index, result.destination.index);
     const endIndex = Math.max(result.source.index, result.destination.index);
 
-    const updatedLinks = items.slice(startIndex, endIndex + 1);
+    const updatedGroups = items.slice(startIndex, endIndex + 1);
 
-    setLinks(items);
+    setGroups(items);
 
-    const bulkUpdateData = updatedLinks.map((link) => ({
-      id: link.id,
-      position: items.findIndex((item) => item.id === link.id),
+    const bulkUpdateData = updatedGroups.map((group) => ({
+      id: group.id,
+      position: items.findIndex((item) => item.id === group.id),
     }));
 
     onReorder(bulkUpdateData);
@@ -86,17 +87,20 @@ export const Reorder = ({ data, communityId }: Props) => {
   const onDelete = async (id: string) => {
     try {
       setIsUpdating(true);
-      await axios.patch(`/api/community/${communityId}/link?action=delete`, {
-        id,
-      });
-      toast.success("Link deleted successfully.");
+      await axios.patch(
+        `/api/community/${communityId}/spaceGroup?action=delete`,
+        {
+          id,
+        }
+      );
+      toast.success("Group deleted successfully.");
       router.refresh();
       setTimeout(() => {
         setOpen(false);
       }, 2000);
     } catch (error) {
       console.log(error);
-      toast.error("Failed to delete Link.");
+      toast.error("Failed to delete Group.");
     } finally {
       setIsUpdating(false);
     }
@@ -123,10 +127,10 @@ export const Reorder = ({ data, communityId }: Props) => {
             <Droppable droppableId="links">
               {(provided) => (
                 <div {...provided.droppableProps} ref={provided.innerRef}>
-                  {links.map((link, index) => (
+                  {groups.map((group, index) => (
                     <Draggable
-                      key={link.id}
-                      draggableId={link.id}
+                      key={group.id}
+                      draggableId={group.id}
                       index={index}
                     >
                       {(provided) => (
@@ -141,29 +145,29 @@ export const Reorder = ({ data, communityId }: Props) => {
                           >
                             <Grip className="h-5 w-5" />
                           </div>
-                          {link.title}
+                          {group.name}
                           <div className="ml-auto pr-2 flex items-center gap-x-2">
-                            <LinkModal
-                              initialData={link}
+                            <SpaceGroupModel
+                              initialData={group}
                               communityId={communityId}
                             >
                               <Button variant={"super"} size={"icon"}>
                                 <ActionTooltip
-                                  label={`Edit ${link.title}`}
+                                  label={`Edit ${group.name}`}
                                   side="left"
                                 >
                                   <Pencil className="w-4 h-4 cursor-pointer hover:opacity-75 transition" />
                                 </ActionTooltip>
                               </Button>
-                            </LinkModal>
+                            </SpaceGroupModel>
                             <DeleteDialog
-                              description="Are you sure you want to delete this link?"
-                              title="Delete Link"
-                              onAction={() => onDelete(link.id)}
+                              description="Are you sure you want to delete this group?"
+                              title="Delete Group"
+                              onAction={() => onDelete(group.id)}
                             >
                               <Button variant={"danger"} size={"icon"}>
                                 <ActionTooltip
-                                  label={`Delete ${link.title}`}
+                                  label={`Delete ${group.name}`}
                                   side="right"
                                 >
                                   <Trash className="w-4 h-4 cursor-pointer hover:opacity-75 transition" />

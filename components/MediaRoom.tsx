@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from "react";
 import "@livekit/components-styles";
-import { LiveKitRoom, VideoConference } from "@livekit/components-react";
+import { LiveKitRoom, VideoConference,ControlBar, ParticipantTile, useTracks, GridLayout } from "@livekit/components-react";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { Track } from 'livekit-client';
 
 interface MediaRoomProps {
     chatId: string;
@@ -52,4 +53,25 @@ export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
     <VideoConference />
   </LiveKitRoom>
   )
+}
+
+
+function MyVideoConference() {
+  // `useTracks` returns all camera and screen share tracks. If a user
+  // joins without a published camera track, a placeholder track is returned.
+  const tracks = useTracks
+  (
+    [
+      { source: Track.Source.Camera, withPlaceholder: true },
+      { source: Track.Source.ScreenShare, withPlaceholder: false },
+    ],
+    { onlySubscribed: false },
+  );
+  return (
+    <GridLayout tracks={tracks} style={{ height: 'calc(100vh - var(--lk-control-bar-height))' }}>
+      {/* The GridLayout accepts zero or one child. The child is used
+      as a template to render all passed in tracks. */}
+      <ParticipantTile />
+    </GridLayout>
+  );
 }

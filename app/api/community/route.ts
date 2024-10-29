@@ -43,6 +43,7 @@ export async function POST(req: Request) {
                     name: "Get started",
                     communityId: community_0.id,
                     userId: user.id,
+                    position: 0
                 },
             });
 
@@ -54,6 +55,8 @@ export async function POST(req: Request) {
                         spaceGroupId: spaceGroup.id,
                         userId: user.id,
                         communityId: community_0.id,
+                        url: "start-here",
+                        position: 0
                     },
                     {
                         name: "Say Hello",
@@ -61,6 +64,8 @@ export async function POST(req: Request) {
                         spaceGroupId: spaceGroup.id,
                         userId: user.id,
                         communityId: community_0.id,
+                        url: "say-hello",
+                        position: 1
                     },
                     {
                         name: "Resources",
@@ -68,6 +73,8 @@ export async function POST(req: Request) {
                         spaceGroupId: spaceGroup.id,
                         userId: user.id,
                         communityId: community_0.id,
+                        url: "resources",
+                        position: 2
                     },
                 ],
             });

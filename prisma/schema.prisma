@@ -74,6 +74,7 @@ model SpaceGroup {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String?
+  position    Int       @default(0)
   community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   communityId String    @db.ObjectId
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -106,9 +107,11 @@ model Link {
 model Space {
   id           String     @id @default(auto()) @map("_id") @db.ObjectId
   name         String
+  url          String
   icon         String
   coverImage   String?
   description  String?
+  position     Int        @default(0)
   spaceGroup   SpaceGroup @relation(fields: [spaceGroupId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   spaceGroupId String     @db.ObjectId
   members      Member[]

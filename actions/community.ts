@@ -86,6 +86,32 @@ export const getCommunityData = async (id: string) => {
       userId: user?.id
     },
     select: {
+      id: true,
+      enableGettingStarted: true,
+      enableFeed: true,
+      url: true,
+      spaceGroups: {
+        orderBy: {
+          position: 'asc'
+        },
+        select: {
+          id: true,
+          name: true,
+          position: true,
+          spaces: {
+            orderBy: {
+              position: 'asc'
+            },
+            select: {
+              id: true,
+              name: true,
+              icon: true,
+              url: true,
+              position: true
+            }
+          }
+        }
+      },
       links: {
         select: {
           id: true,
@@ -108,7 +134,12 @@ export const getCommunityData = async (id: string) => {
   })
 
   return {
+    url: community?.url,
+    gettingStarted: community?.enableGettingStarted,
+    feed: community?.enableFeed,
     links: community?.links,
-    role: community?.members?.find(member => member.userId === user?.id)?.type
+    role: community?.members?.find(member => member.userId === user?.id)?.type,
+    spaceGroups: community?.spaceGroups,
+    spaces: community?.spaceGroups?.flatMap(group => group.spaces)
   }
 }

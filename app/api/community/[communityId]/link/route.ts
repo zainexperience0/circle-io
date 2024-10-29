@@ -20,7 +20,7 @@ export async function POST(
     }
   })
 
-  const position = lastLink ? lastLink.position + 1 : 1
+  const position = lastLink ? lastLink.position + 1 : 0
   try {
     await db.link.create({
       data: {
