@@ -10,6 +10,7 @@ import { FaGithub } from "react-icons/fa";
 
 export const Navbar = async () => {
   const community = await initialCommunity();
+
   const user = await currentUser();
   return (
     <header className="h-20 sticky top-0 bg-white w-full border-b-2 border-slate-200 px-4">
@@ -43,15 +44,13 @@ export const Navbar = async () => {
                   {user.name?.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              {community && (
-                <Link
-                  href={
-                    community
-                      ? `/community/${community.url}/getting-started`
-                      : "/community/create"
-                  }
-                >
+              {community ? (
+                <Link href={`/community/${community.url}/getting-started`}>
                   <Button variant={"sidebarOutline"}>Enter</Button>
+                </Link>
+              ) : (
+                <Link href={"/community/create"}>
+                  <Button variant={"primary"}>Get Started</Button>
                 </Link>
               )}
             </>

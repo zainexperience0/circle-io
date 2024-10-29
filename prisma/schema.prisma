@@ -126,6 +126,7 @@ model Member {
   userId      String     @db.ObjectId
   community   Community  @relation(fields: [communityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   communityId String     @db.ObjectId
+  points      Int        @default(0)
   type        MemberType @default(GUEST)
   posts       Post[]
 

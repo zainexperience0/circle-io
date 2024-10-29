@@ -68,7 +68,7 @@ const CommunityCreate = () => {
       }));
 
       setTimeout(() => {
-        router.push(`/community/${res.data.url}/getting-started`);
+        router.push(`/`);
       }, 2000);
     } catch (error) {
       setState((prevState) => ({

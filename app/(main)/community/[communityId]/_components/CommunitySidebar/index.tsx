@@ -13,7 +13,7 @@ import { Reorder } from "@/components/models/community/Reorder";
 export const CommunitySidebar = async () => {
     const communuties = await getCommunities()
   return (
-    <div className="space-y-4 px-2 flex flex-col h-full items-center w-full py-6 border-r-2 border-purple-300">
+    <div className="space-y-4 px-2 flex flex-col h-full items-center w-full py-6 border-r-2 border-purple-300 bg-white">
       <ScrollArea className="w-full">
       {communuties.map((community) => (
           <Item

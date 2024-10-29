@@ -17,7 +17,7 @@ export async function POST(req: Request) {
                 userId: user.id
             },
             orderBy: {
-                position: "desc"
+                position: "desc",
             },
         })
         const position = lastCommunity ? lastCommunity.position + 1 : 1
