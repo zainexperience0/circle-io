@@ -70,5 +70,28 @@ export const getCommunityWithMemberRoles = async (url: string) => {
   })
 
   const role = community?.members?.find(member => member.userId === user?.id)?.type
-  return {community, role}
+  return { community, role }
+}
+
+export const getCommunityForSidebar = async (id: string) => {
+  const user = await currentUser()
+  if (!user?.id) {
+    redirect('/auth/sign-in')
+  }
+
+  const community = await db.community.findUnique({
+    where: {
+      id,
+      userId: user?.id
+    },
+    select: {
+      links: true,
+      members: true
+    }
+  })
+
+  return {
+    links: community?.links,
+    role: community?.members?.find(member => member.userId === user?.id)?.type
+  }
 }

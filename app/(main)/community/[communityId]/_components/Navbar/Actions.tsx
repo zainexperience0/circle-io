@@ -32,8 +32,6 @@ interface NavbarProps {
   role: MemberType;
 }
 export const Actions = ({ community, role }: NavbarProps) => {
-  console.log(role);
-
   return (
     <>
       {role === "ADMIN" ? (
