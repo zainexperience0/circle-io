@@ -86,7 +86,18 @@ export const getCommunityData = async (id: string) => {
       userId: user?.id
     },
     select: {
-      links: true,
+      links: {
+        select: {
+          id: true,
+          position: true,
+          title: true,
+          communityId: true,
+          url: true,
+        },
+        orderBy: {
+          position: 'asc'
+        }
+      },
       members: {
         select: {
           userId: true,

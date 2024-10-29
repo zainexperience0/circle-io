@@ -38,28 +38,56 @@ export async function POST(
   }
 }
 
-export async function PUT(req: Request) {
+export async function PATCH(req: Request) {
+  const url_0 = new URL(req.url)
+  const action = url_0.searchParams.get("action")
   const user = await currentUser()
   if (!user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
-  const { list } = await req.json()
+  const { list, id, title, url } = await req.json()
+  if (action === "edit" && id) {
+    console.log(id, title, url, list, action);
 
-  for (let item of list) {
-    await db.link.update({
+    const link = await db.link.update({
       where: {
-        id: item.id
+        id
       },
       data: {
-        position: item.position
+        title,
+        url
       },
       select: {
         id: true
       }
     })
+
+    return NextResponse.json(link, { status: 200 })
+  } else if (list && action === "reorder") {
+    for (let item of list) {
+      await db.link.update({
+        where: {
+          id: item.id
+        },
+        data: {
+          position: item.position
+        },
+        select: {
+          id: true
+        }
+      })
+    }
+
+    return NextResponse.json("Success", { status: 200 })
+  } else if (id && action === "delete") {
+    await db.link.delete({
+      where: {
+        id
+      }
+    })
+    return NextResponse.json("Success", { status: 200 })
   }
 
-  return NextResponse.json("Success", { status: 200 })
-
+  return NextResponse.json({ error: "Invalid user data" }, { status: 400 })
 }

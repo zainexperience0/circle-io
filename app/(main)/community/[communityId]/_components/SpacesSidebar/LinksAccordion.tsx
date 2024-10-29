@@ -1,5 +1,6 @@
 import { ActionTooltip } from "@/components/ActionTooltip";
-import LinkModal from "@/components/models/LinkModel";
+import LinkModal from "@/components/models/Link/LinkModel";
+import { Reorder } from "@/components/models/Link/Reorder";
 import {
   Accordion,
   AccordionContent,
@@ -12,7 +13,13 @@ import { ArrowUpRight, Plus, Settings } from "lucide-react";
 import Link from "next/link";
 
 interface Props {
-  data: PLink[] | null;
+  data: {
+    communityId: string;
+    id: string;
+    position: number;
+    url: string;
+    title: string;
+}[] | undefined ;
   role: MemberType;
   communityId: string;
 }
@@ -39,17 +46,13 @@ export const LinksAccordion = ({ data, role, communityId }: Props) => {
           {(role === "ADMIN" || role === "MODERATOR") && (
             <div className="flex items-center justify-between">
               <LinkModal communityId={communityId}>
-                <ActionTooltip label="Add Link">
-                  <Button variant="ghost" size="sm">
-                    <Plus className="mr-2 h-4 w-4" />
-                  </Button>
-                </ActionTooltip>
-              </LinkModal>
-              <ActionTooltip label="Settings">
                 <Button variant="ghost" size="sm">
-                  <Settings className="mr-2 h-4 w-4" />
+                  <ActionTooltip label="Add Link">
+                    <Plus className="mr-2 h-4 w-4" />
+                  </ActionTooltip>
                 </Button>
-              </ActionTooltip>
+              </LinkModal>
+              <Reorder data={data!} communityId={communityId}/>
             </div>
           )}
         </AccordionContent>

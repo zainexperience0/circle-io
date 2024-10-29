@@ -18,13 +18,22 @@ import { CheckCircle, Loader } from "lucide-react";
 interface LinkModalProps {
   children: React.ReactNode;
   communityId: string | undefined;
+  initialData?: {
+    id: string;
+    url: string;
+    title: string;
+  };
 }
 
-export default function LinkModal({ children, communityId }: LinkModalProps) {
+export default function LinkModal({
+  children,
+  communityId,
+  initialData,
+}: LinkModalProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState({
-    fields: { title: "", url: "" },
+    fields: { title: initialData?.title || "", url: initialData?.url || "" },
     loading: false,
     error: false,
     success: false,
@@ -34,7 +43,20 @@ export default function LinkModal({ children, communityId }: LinkModalProps) {
     setState((prev) => ({ ...prev, loading: true, error: false }));
 
     try {
-      await axios.post(`/api/community/${communityId}/link`, state.fields);
+      if (initialData) {
+        // Edit existing link (PUT request)
+        await axios.patch(`/api/community/${communityId}/link?action=edit`, {
+          id: initialData.id,
+          title: state.fields.title,
+          url: state.fields.url,
+        });
+      } else {
+        // Create new link (POST request)
+        await axios.post(`/api/community/${communityId}/link`, {
+          title: state.fields.title,
+          url: state.fields.url,
+        });
+      }
 
       setState((prev) => ({
         ...prev,
@@ -106,10 +128,13 @@ export default function LinkModal({ children, communityId }: LinkModalProps) {
           variant={"super"}
         >
           {state.loading && <Loader className="h-4 w-4 mr-2 animate-spin" />}
-          {state.loading && "Creating..."}
-          {!state.loading && !state.success && !state.error && "Submit"}
+          {state.loading && (initialData ? "Updating..." : "Creating...")}
+          {!state.loading &&
+            !state.success &&
+            !state.error &&
+            (initialData ? "Update" : "Create")}
           {state.success && <CheckCircle className="h-4 w-4 mr-2" />}
-          {state.success && "Link created!"}
+          {state.success && (initialData ? "Link updated!" : "Link created!")}
           {state.error && "Failed to create!"}
         </Button>
       </DialogContent>
